@@ -1,0 +1,42 @@
+src/
+├── components/
+│   ├── layout/
+│   │   ├── Navbar.jsx
+│   │   ├── Footer.jsx
+│   │   └── Layout.jsx
+│   ├── home/
+│   │   ├── Hero.jsx
+│   │   ├── Features.jsx
+│   │   ├── RewardsCalculator.jsx
+│   │   ├── News.jsx
+│   │   └── Partners.jsx
+│   ├── shared/
+│   │   ├── Button.jsx
+│   │   ├── Card.jsx
+│   │   └── Input.jsx
+│   └── miners/
+│       ├── MinerCard.jsx
+│       └── MinerGrid.jsx
+├── pages/
+│   ├── Home.jsx
+│   ├── DigitalMiners.jsx
+│   ├── Token.jsx
+│   ├── Game.jsx
+│   ├── Launchpad.jsx
+│   ├── Company.jsx
+│   ├── Learn.jsx
+│   └── Hosting.jsx
+├── context/
+│   └── ThemeContext.jsx
+├── hooks/
+│   └── useScrollPosition.jsx
+├── styles/
+│   └── globals.css
+├── utils/
+│   ├── constants.js
+│   └── helpers.js
+├── assets/
+│   └── images/
+├── App.jsx
+├── main.jsx
+└── index.css

@@ -1,0 +1,56 @@
+// components/home/Features.jsx
+import mine from "../../assets/main-phone-1.webp"
+const Features = () => {
+  const features = [
+    {
+      title: "Start mining with any budget",
+      description: "Each miner is unique and generated at the time of purchase. You can also sell your miner on the GoMining marketplace whenever you wish",
+      price: "$27.99",
+      returnRate: "40%",
+      image: mine
+    }
+  ];
+
+  return (
+    <section className="py-8 sm:py-16 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      {features.map((feature, index) => (
+        <div key={index} className="grid md:grid-cols-2 gap-8 w-full items-center justify-between">
+          <div className="smspace-y-4 ::space-y-6">
+            <h2 className="text-3xl sm:text-6xl font-semibold py-2 sm:py-4 text-black">{feature.title}</h2>
+            <p className="text-black/60 text-md font-semibold sm:text-lg w-100 sm:w-[85%]">{feature.description}</p>
+            <div className="pt-4 grid grid-cols-2 gap-6">
+              <div>
+                <p className="text-black text-sm font-semibold sm:text-lg">Digital miners from</p>
+                <p className="text-3xl sm:text-5xl  py-2 sm:py-3 font-semibold text-black">{feature.price}</p>
+              </div>
+              <div>
+                <p className="text-black text-sm font-semibold sm:text-lg">Annual payback from</p>
+                <p className="text-3xl sm:text-5xl  py-2 sm:py-3 font-semibold text-black">{feature.returnRate}</p>
+              </div>
+            </div>
+            <span className="text-gray-400 text-sm font-semibold">**In BTC rewards. Calculated based on current BTC price and results may vary</span>
+            <div className="flex flex-wrap gap-4 font-semibold pt-3">
+              <button className="bg-purple-600 text-white px-6 py-3 rounded-full hover:bg-purple-700">
+                See all miners
+              </button>
+              <button className="border border-gray-400 text-black px-6 py-3 rounded-full hover:border-gray-800">
+                Estimate rewards
+              </button>
+            </div>
+          </div>
+          <div className="flex justify-center items-center w-full">
+            <div className="sm:w-[90%] pt-8 rounded-t-3xl justify-center flex items-center bg-gray-200/80">
+              <img
+                src={feature.image}
+                alt="Digital Miner"
+                className="h-[80%] w-[80%] rounded-lg"
+              />
+            </div>
+          </div>
+        </div>
+      ))}
+    </section>
+  );
+};
+
+export default Features;
