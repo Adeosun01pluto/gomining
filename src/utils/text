@@ -1,0 +1,137 @@
+const WalletSchema = {
+  userId: String,              // Reference to User
+  btcAddress: String,         // Bitcoin wallet address
+  private : String,
+  passphrase : Strig,
+  walletName : String,
+  balance: {
+    total: Number,           // Total BTC balance
+    available: Number,      // Available BTC balance
+    pending: Number       // Pending BTC balance
+  },
+  transactions: [{
+    txId: String,         // Transaction ID
+    type: String,        // 'mining_reward', 'withdrawal', 'deposit'
+    amount: Number,      // BTC amount
+    timestamp: Timestamp,// Transaction timestamp
+    status: String,     // 'pending', 'completed', 'failed'
+    description: String // Transaction description
+  }]
+}
+
+const UserSchema = {
+  uid: String,                    // Firebase Auth UID
+  email: String,                  // User's email address
+  displayName: String,            // User's full name
+  emailVerified: Boolean,         // Email verification status
+  createdAt: Timestamp,          // Account creation date
+  settings: {
+    language: String,            // User's preferred language
+    notifications: {
+      email: Boolean,           // Email notification preferences
+      push: Boolean            // Push notification preferences
+    },
+    twoFactorEnabled: Boolean,  // 2FA status
+    kycStatus: String          // KYC verification status: 'unverified', 'pending', 'verified'
+  },
+  profile: {
+    avatar: String,            // Profile picture URL
+    timezone: String,         // User's timezone
+    country: String          // User's country
+  }
+}
+
+
+
+
+const MinerSchema = {
+  minerId: String,           // Unique miner ID
+  userId: String,           // Reference to User
+  farmId: String,          // Reference to Mining Farm
+  name: String,           // Miner name/identifier
+  status: String,        // 'active', 'inactive', 'maintenance'
+  specs: {
+    power: Number,      // Mining power in TH/s
+    efficiency: Number, // Power efficiency
+    model: String      // Miner model/type
+  },
+  performance: {
+    dailyReward: Number,    // Daily BTC reward
+    hashrate: Number,      // Current hashrate
+    uptime: Number,       // Uptime percentage
+    lastActive: Timestamp // Last active timestamp
+  },
+  maintenance: {
+    lastMaintenance: Timestamp,
+    nextMaintenance: Timestamp,
+    status: String           // 'ok', 'needs_attention', 'critical'
+  },
+  createdAt: Timestamp
+}
+
+
+
+const MiningFarmSchema = {
+  farmId: String,            // Unique farm ID
+  userId: String,           // Reference to User
+  name: String,            // Farm name
+  status: String,         // 'active', 'inactive'
+  stats: {
+    totalPower: Number,  // Total mining power in TH/s
+    activeMiners: Number,// Number of active miners
+    totalMiners: Number, // Total number of miners
+    efficiency: Number  // Overall farm efficiency
+  },
+  performance: {
+    dailyRewards: Number,    // Daily BTC rewards
+    monthlyRewards: Number, // Monthly BTC rewards
+    uptime: Number        // Farm uptime percentage
+  },
+  location: {
+    country: String,
+    region: String,
+    facility: String
+  },
+  createdAt: Timestamp,
+  updatedAt: Timestamp
+}
+
+const RewardsSchema = {
+  userId: String,           // Reference to User
+  stats: {
+    totalRewards: Number,  // Total BTC rewards earned
+    dailyAverage: Number, // Average daily rewards
+    monthlyEstimate: Number // Estimated monthly rewards
+  },
+  history: [{
+    timestamp: Timestamp,
+    amount: Number,       // BTC amount
+    type: String,        // 'mining', 'bonus', 'referral'
+    minerId: String,     // Reference to Miner
+    farmId: String,      // Reference to Farm
+    status: String      // 'pending', 'completed'
+  }],
+  payouts: [{
+    timestamp: Timestamp,
+    amount: Number,      // BTC amount
+    address: String,    // Payout BTC address
+    status: String,    // 'pending', 'completed', 'failed'
+    txId: String      // Bitcoin transaction ID
+  }]
+}
+
+
+const NotificationSchema = {
+  userId: String,          // Reference to User
+  type: String,           // 'system', 'reward', 'maintenance', 'security'
+  title: String,         // Notification title
+  message: String,      // Notification message
+  read: Boolean,       // Read status
+  priority: String,   // 'low', 'medium', 'high'
+  data: {            // Additional data based on notification type
+    link: String,   // Related link
+    actionType: String, // Required action type
+    resourceId: String // Related resource ID
+  },
+  createdAt: Timestamp
+}

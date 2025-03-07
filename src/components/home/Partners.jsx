@@ -19,19 +19,21 @@ const Partners = () => {
 
   return (
     <section className="py-4 px-4 sm:px-6 lg:px-8 bg-[#0B0B1A]">
-      <div className="flex gap-8 items-center overflow-x-scroll md:overflow-hidden w-full justify-evenly">
-        {partners.map((partner, index) => (
-          <div
-            key={index}
-            className="flex items-center justify-center"
-          >
-            <img
-              src={partner.logo}
-              alt={`${partner.name} logo`}
-              className="w-24 h-16 object-contain" // Adjust width and height as needed
-            />
-          </div>
-        ))}
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-wrap gap-6 sm:gap-8 items-center justify-center sm:justify-evenly py-4">
+          {partners.map((partner, index) => (
+            <div
+              key={index}
+              className="flex items-center justify-center w-[120px] sm:w-[150px]"
+            >
+              <img
+                src={partner.logo}
+                alt={`${partner.name} logo`}
+                className="w-full h-auto object-contain max-h-12 sm:max-h-16"
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

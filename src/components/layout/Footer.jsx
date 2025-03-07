@@ -1,82 +1,193 @@
-import React from 'react'
-import { FaTwitter } from "react-icons/fa";   // Twitter icon
-import { FaLinkedin } from "react-icons/fa";  // LinkedIn icon
-import { FaDiscord } from "react-icons/fa";   // Discord icon
-import { FaTelegram } from "react-icons/fa";  // Telegram icon
+import React from 'react';
+import { FaTwitter, FaLinkedin, FaDiscord, FaTelegram, FaGlobe, FaMedium, FaGooglePlay, FaApple, FaLanguage, FaComments } from 'react-icons/fa';
 
-function Footer() {
+const Footer = () => {
+  const navigationLinks = {
+    about: {
+      title: 'ABOUT',
+      links: [
+        { name: 'GoMining', href: '/about' },
+        { name: 'Tokenomics', href: '/tokenomics' },
+        { name: 'Service providers', href: '/providers' },
+        { name: 'Blog & News', href: '/news' },
+        { name: 'Contacts', href: '/contacts' }
+      ]
+    },
+    products: {
+      title: 'PRODUCTS',
+      links: [
+        { name: 'Digital miners', href: '/miners' },
+        { name: 'Avatars', href: '/avatars' },
+        { name: 'Collections', href: '/collections' },
+        { name: 'Token', href: '/token' },
+        { name: 'Game', href: '/game' },
+        { name: 'Launchpad', href: '/launchpad' }
+      ]
+    },
+    partners: {
+      title: 'FOR PARTNERS',
+      links: [
+        { name: 'Partner program', href: '/partner-program' },
+        { name: 'Referral program', href: '/referral' },
+        { name: 'Hosting', href: '/hosting' }
+      ]
+    },
+    help: {
+      title: 'HELP',
+      links: [
+        { name: 'Customer help', href: '/help' },
+        { name: 'Employee check', href: '/employee-check' }
+      ]
+    }
+  };
+
+  const socialLinks = [
+    { icon: FaGlobe, href: 'https://gomining.com', label: 'Website' },
+    { icon: FaMedium, href: 'https://medium.com/gomining', label: 'Medium' },
+    { icon: FaLinkedin, href: 'https://linkedin.com/company/gomining', label: 'LinkedIn' },
+    { icon: FaTwitter, href: 'https://twitter.com/gomining_eng', label: 'Twitter' },
+    { icon: FaTelegram, href: 'https://t.me/gomining_official', label: 'Telegram' },
+    { icon: FaDiscord, href: 'https://discord.gg/gomining', label: 'Discord' }
+  ];
+
+  const policyLinks = [
+    { name: 'Privacy Policy', href: '/privacy' },
+    { name: 'Terms of Use', href: '/terms' },
+    { name: 'Compliance Policy', href: '/compliance' },
+    { name: 'Token White Paper', href: '/token-whitepaper' },
+    { name: 'Digital Miners White Paper', href: '/miners-whitepaper' },
+    { name: 'Cookie Policy', href: '/cookies' }
+  ];
+
   return (
-  <footer className="bg-gray-900 text-white">
-    <div className="max-w-7xl mx-auto px-4 py-12">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-        <div>
-          <img src="/api/placeholder/120/40" alt="GoMining Logo" className="mb-4" />
-          <div className="flex gap-4 mb-4">
-            <a href="https://play.google.com/store" target="_blank" rel="noopener noreferrer">
-              <img src="/api/placeholder/120/40" alt="Get it on Google Play" />
-            </a>
-            <a href="https://apps.apple.com" target="_blank" rel="noopener noreferrer">
-              <img src="/api/placeholder/120/40" alt="Download on App Store" />
-            </a>
+    <footer className="relative bg-[#0F0F14] text-white">
+      {/* Main Footer Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        {/* Top Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-12 mb-12">
+          {/* Logo & App Downloads */}
+          <div className="space-y-6 col-span-2">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-purple-600 rounded-lg"></div>
+              <span className="text-xl font-bold">GoMining</span>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-4">
+              <a
+                href="https://play.google.com/store/apps/details?id=com.gomining"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2 bg-black rounded-lg hover:bg-gray-900 transition-colors"
+              >
+                <FaGooglePlay className="w-6 h-6" />
+                <div className="text-xs">
+                  <div>GET IT ON</div>
+                  <div className="font-semibold">Google Play</div>
+                </div>
+              </a>
+              
+              <a
+                href="https://apps.apple.com/app/gomining"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2 bg-black rounded-lg hover:bg-gray-900 transition-colors"
+              >
+                <FaApple className="w-6 h-6" />
+                <div className="text-xs">
+                  <div>Download on the</div>
+                  <div className="font-semibold">App Store</div>
+                </div>
+              </a>
+            </div>
+
+            <div className="flex items-center gap-2 text-gray-400 hover:text-white cursor-pointer">
+              <FaLanguage className="w-5 h-5" />
+              <span className="text-sm">English</span>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-sm">English</span>
+
+          {/* Navigation Links */}
+          {Object.values(navigationLinks).map((section) => (
+            <div key={section.title}>
+              <h3 className="font-bold text-sm tracking-wider mb-4">{section.title}</h3>
+              <ul className="space-y-2">
+                {section.links.map((link) => (
+                  <li key={link.name}>
+                    <a
+                      href={link.href}
+                      className="text-gray-400 hover:text-white transition-colors text-sm"
+                    >
+                      {link.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        {/* Bottom Section */}
+        <div className="border-t border-gray-800 pt-8">
+          {/* Policy Links */}
+          <div className="text-center text-xs text-gray-400 space-y-4">
+            <p>© {new Date().getFullYear()} GoMining. All rights reserved.</p>
+            <div className="flex flex-wrap justify-center gap-4 mb-6">
+              {policyLinks.map((link) => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  {link.name}
+                </a>
+              ))}
+            </div>
+            <div className="max-w-4xl mx-auto space-y-4">
+              <p>
+                YUCCA DIGITAL (Latvian Limited liability company (SIA)), Rīga, Elizabetes iela 22 - 42, LV-1050, registered on 08.10.2021, registration number: 40203351911
+              </p>
+              <p>
+                GoMining (BVI) Limited, Trinity Chambers, PO Box 4301, Road Town, Tortola, British Virgin Islands, BVI company number: 2110978
+              </p>
+              <p>
+                BMINE BVI LIMITED, Trinity Chambers, Road Town, Tortola, British Virgin Islands VG 1110
+              </p>
+              <p className="text-justify">
+                GoMining (British Virgin Islands) Limited, SIA Yucca Digital and BMINE BVI LIMITED operate in full compliance with all applicable laws and regulations and are firmly committed to combating money laundering, terrorist financing and proliferation financing. We adhere to the highest standards, ensuring strict compliance with all relevant anti-money laundering and terrorist financing obligations, as well as anti-proliferation financing measures, to maintain the integrity and security of our operations and services.
+              </p>
+              <p className="text-justify">
+                The content presented on this website is not an offer or recommendation for investment. The data presented here may contain approximate figures and should not be used as a basis for making investment decisions. In this regard, before using our services, you are advised to independently assess the risks associated with our products and services. By accessing and using this website and our services, you agree to comply with our Terms of Use and Privacy Policy. If you have any questions, please don't hesitate to contact us.
+              </p>
+            </div>
           </div>
-        </div>
 
-        <div>
-          <h3 className="font-bold mb-4">ABOUT</h3>
-          <ul className="space-y-2">
-            <li><a href="#" className="text-gray-400 hover:text-white">GoMining</a></li>
-            <li><a href="#" className="text-gray-400 hover:text-white">Tokenomics</a></li>
-            <li><a href="#" className="text-gray-400 hover:text-white">Service providers</a></li>
-            <li><a href="#" className="text-gray-400 hover:text-white">Blog & News</a></li>
-            <li><a href="#" className="text-gray-400 hover:text-white">Contacts</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 className="font-bold mb-4">PRODUCTS</h3>
-          <ul className="space-y-2">
-            <li><a href="#" className="text-gray-400 hover:text-white">Digital miners</a></li>
-            <li><a href="#" className="text-gray-400 hover:text-white">Token</a></li>
-            <li><a href="#" className="text-gray-400 hover:text-white">Game</a></li>
-            <li><a href="#" className="text-gray-400 hover:text-white">Launchpad</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 className="font-bold mb-4">HELP</h3>
-          <ul className="space-y-2">
-            <li><a href="#" className="text-gray-400 hover:text-white">Customer help</a></li>
-            <li><a href="#" className="text-gray-400 hover:text-white">Partner program</a></li>
-            <li><a href="#" className="text-gray-400 hover:text-white">Employee check</a></li>
-          </ul>
+          {/* Social Links */}
+          <div className="flex justify-center gap-4 mb-6">
+            {socialLinks.map((social) => (
+              <a
+                key={social.label}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-gray-700 transition-colors"
+                aria-label={social.label}
+              >
+                <social.icon className="w-5 h-5" />
+              </a>
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="border-t border-gray-800 pt-8">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="text-sm text-gray-400">
-            © 2025 GoMining All rights reserved
-          </div>
-          <div className="flex gap-4">
-            <a href="#" className="text-gray-400 hover:text-white"><FaTwitter size={20} /></a>
-            <a href="#" className="text-gray-400 hover:text-white"><FaLinkedin size={20} /></a>
-            <a href="#" className="text-gray-400 hover:text-white"><FaTelegram size={20} /></a>
-            <a href="#" className="text-gray-400 hover:text-white"><FaDiscord size={20} /></a>
-          </div>
-          <div className="flex gap-4 text-sm text-gray-400">
-            <a href="#" className="hover:text-white">Privacy policy</a>
-            <a href="#" className="hover:text-white">Terms of use</a>
-            <a href="#" className="hover:text-white">Cookie policy</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </footer>
+      {/* Floating Chat Button */}
+      <button
+        className="fixed bottom-6 right-6 w-14 h-14 bg-purple-600 hover:bg-purple-700 rounded-full flex items-center justify-center shadow-lg transition-colors"
+        aria-label="Open chat"
+      >
+        <FaComments className="w-6 h-6" />
+      </button>
+    </footer>
+  );
+};
 
-)
-}
-
-export default Footer
+export default Footer;
