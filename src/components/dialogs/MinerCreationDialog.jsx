@@ -21,6 +21,20 @@ const MinerCreationDialog = ({ isOpen, onClose }) => {
   const [showMinerTraits, setShowMinerTraits] = useState(false);
   const [useGominingToken, setUseGominingToken] = useState(false);
   const [isEditingPrice, setIsEditingPrice] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+
+    // Navigate to Wallet
+    const handleNavigateToWallet = () => {
+      onClose()
+      navigate('/dashboard/wallet');
+    };
+  
+  const userBalance = 0
+  // Check if all required fields are provided
+  const isFormValid = computingPower > 0 && selectedEfficiency && minerPrice > 0;
+
+  // Check if the user has enough balance
+  const hasEnoughBalance = userBalance >= minerPrice;
 
   // Current BTC price (in the real app, this would be fetched from an API)
   const btcPrice = 87826.12;
@@ -60,6 +74,19 @@ const MinerCreationDialog = ({ isOpen, onClose }) => {
     energyEfficiency: Number(selectedEfficiency),
     useGominingToken
   });
+
+
+  // Handle button click
+  const handleNextClick = () => {
+    if (!hasEnoughBalance) {
+      setAlertMessage("Insufficient balance. Please connect or add funds.");
+      return;
+    }
+
+    setAlertMessage("");
+    onClose();
+    handleCreateMiner(navigate);
+  };
 
   // Get current computing power options
   const computingPowerOptions = getComputingPowerOptions();
@@ -263,16 +290,28 @@ const MinerCreationDialog = ({ isOpen, onClose }) => {
                 </div>
               )}
             </div>
-
+             {/* Alert Message */}
+              {alertMessage && (
+                <div className="bg-red-100 text-red-600 px-3 py-2 rounded-lg text-sm text-center">
+                  {alertMessage}
+                  <button 
+                    onClick={handleNavigateToWallet} 
+                    className="ml-2 text-blue-600 underline hover:text-blue-800"
+                  >
+                    Add Funds
+                  </button>
+                </div>
+              )}
             {/* Next Button */}
-            <button 
-              onClick={() => {
-                onClose();
-                handleCreateMiner(navigate);
-              }}
-              className="w-full py-3 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition-colors"
+            <button
+              onClick={handleNextClick}
+              disabled={!isFormValid}
+              className={`w-full py-3 rounded-lg font-medium transition-colors
+                ${!isFormValid ? "bg-gray-300 text-gray-500 cursor-not-allowed" : 
+                hasEnoughBalance ? "bg-purple-600 text-white hover:bg-purple-700" : "bg-yellow-500 text-white hover:bg-yellow-600"}
+              `}
             >
-              Next
+              {hasEnoughBalance ? "Next" : "Add Funds"}
             </button>
           </div>
         </div>

@@ -80,49 +80,49 @@ const Navbar = () => {
     company: {
       title: 'Company',
       items: [
-        { name: 'About GoMining', path: '/about' },
-        { name: 'Service Providers', path: '/providers' },
-        { name: 'Careers', path: '/careers' },
-        { name: 'Contacts', path: '/contacts' },
-        { name: 'Referral Program', path: '/referral' },
+        { name: 'About GoMining', path: '/' },
+        { name: 'Service Providers', path: '/' },
+        { name: 'Careers', path: '/' },
+        { name: 'Contacts', path: '/' },
+        { name: 'Referral Program', path: '/' },
       ]
     },
     learn: {
       title: 'Learn',
       items: [
-        { name: 'Blog & News', path: '/news' },
-        { name: 'Customer Help', path: '/help' },
-        { name: 'Launchpad', path: '/launchpad' },
-        { name: 'Calculator', path: '/calculator', icon: IoCalculator },
-        { name: 'Hosting', path: '/hosting', external: true },
+        { name: 'Blog & News', path: '/' },
+        { name: 'Customer Help', path: '/' },
+        { name: 'Launchpad', path: '/' },
+        { name: 'Calculator', path: '/', icon: IoCalculator },
+        { name: 'Hosting', path: '/', external: true },
       ]
     },
     miners: {
       title: 'Digital Miners',
       items: [
-        { name: 'How it Works', path: '/how-it-works' },
-        { name: 'Reward Calculator', path: '/rewards' },
-        { name: 'Collections', path: '/collections' },
-        { name: 'Avatars', path: '/avatars' },
+        { name: 'How it Works', path: '/' },
+        { name: 'Reward Calculator', path: '/dashboard/rewards' },
+        { name: 'Collections', path: '/' },
+        { name: 'Avatars', path: '/' },
       ]
     },
     token: {
       title: 'Token',
       items: [
-        { name: 'About Token', path: '/token' },
-        { name: 'Tokenomics', path: '/tokenomics' },
+        { name: 'About Token', path: '/' },
+        { name: 'Tokenomics', path: '/' },
       ]
     }
   };
 
   const mainNavItems = [
-    { name: 'Digital miners', path: '/digital-miners' },
-    { name: 'Token', path: '/token' },
-    { name: 'Game', path: '/game' },
-    { name: 'Launchpad', path: '/launchpad' },
-    { name: 'Company', path: '/company' },
-    { name: 'Learn', path: '/learn' },
-    { name: 'Hosting', path: '/hosting', external: true },
+    { name: 'Digital miners', path: '/' },
+    { name: 'Token', path: '/' },
+    { name: 'Game', path: '/' },
+    { name: 'Launchpad', path: '/' },
+    { name: 'Company', path: '/' },
+    { name: 'Learn', path: '/' },
+    { name: 'Hosting', path: '/', external: true },
   ];
 
   return (
@@ -171,8 +171,8 @@ const Navbar = () => {
               <div className="ml-6 flex items-center space-x-4">
                 {user ? (
                   <>
-                    <span className="text-gray-300 px-3 py-2 text-sm">
-                      {user.displayName || user.email}
+                    <span className="flex items-center justify-center w-8 h-8 bg-purple-600 text-white rounded-full">
+                      {(user.displayName || user.email)[0].toUpperCase()}
                     </span>
                     <button 
                       onClick={handleLogout}
@@ -359,12 +359,15 @@ const Navbar = () => {
       </nav>
 
       {/* Floating Chat Button */}
-      <button
+      <a
+        href="https://t.me/your_telegram_channel"
+        target="_blank"
+        rel="noopener noreferrer"
         className="fixed bottom-6 right-6 w-14 h-14 bg-purple-600 hover:bg-purple-700 rounded-full flex items-center justify-center shadow-lg transition-colors z-[998]"
         aria-label="Open chat"
       >
         <FaComments className="w-6 h-6 text-white" />
-      </button>
+      </a>
     </>
   );
 };

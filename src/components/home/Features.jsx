@@ -1,5 +1,9 @@
 // components/home/Features.jsx
 import mine from "../../assets/main-phone-1.webp"
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"
+
 const Features = () => {
   const features = [
     {
@@ -10,6 +14,27 @@ const Features = () => {
       image: mine
     }
   ];
+
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+  const auth = getAuth();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => unsubscribe();
+  }, [auth]);
+
+
+  const handleNavigation = (path) => {
+    if (user) {
+      navigate(path)
+    } else {
+      navigate("/login")
+    }
+  }
 
   return (
     <section className="py-8 px-4 sm:py-16 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -36,10 +61,15 @@ const Features = () => {
               **In BTC rewards. Calculated based on current BTC price and results may vary
             </span>
             <div className="flex flex-wrap gap-3 sm:gap-4 font-semibold pt-3">
-              <button className="bg-purple-600 text-white px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base rounded-full hover:bg-purple-700">
+              <button
+                onClick={() => handleNavigation("/dashboard/mining-farm")}
+                className="bg-purple-600 text-white px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base rounded-full hover:bg-purple-700"
+              >
                 See all miners
               </button>
-              <button className="border border-gray-400 text-black px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base rounded-full hover:border-gray-800">
+              <button 
+                onClick={() => handleNavigation("/dashboard/rewards")}
+                className="border border-gray-400 text-black px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base rounded-full hover:border-gray-800">
                 Estimate rewards
               </button>
             </div>

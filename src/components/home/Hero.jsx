@@ -1,12 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import hero from "../../assets/home-hero.webp";
 // import heromd from "../../assets/home-hero.webp";
 
 const Hero = () => {
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+  const auth = getAuth();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => unsubscribe();
+  }, [auth]);
+
+  const handleNavigation = (path) => {
+    if (user) {
+      navigate(path);
+    } else {
+      navigate("/login");
+    }
+  };
+
   return (
     <div className="relative bg-[#0B0B1A] md:min-h-[100vh] flex flex-col">
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-24 flex flex-col items-center">
+      <div className="z-[10] max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-24 flex flex-col items-center">
         <div className="text-center">
           <h1 className="text-3xl tracking-tight font-semibold text-white sm:text-5xl md:text-5xl">
             DIGITAL MINERS THAT EARN DAILY
@@ -18,20 +40,20 @@ const Hero = () => {
           </p>
           <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
             <div className="rounded-full shadow">
-              <a
-                href="/get-started"
+              <button
+                onClick={() => handleNavigation("/dashboard")}
                 className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-md font-semibold rounded-full text-white bg-purple-600 hover:bg-purple-700 md:py-2 md:text-lg md:px-7"
               >
                 Get a digital miner
-              </a>
+              </button>
             </div>
             <div className="mt-3 rounded-full shadow sm:mt-0 sm:ml-3">
-              <a
-                href="/learn-more"
+              <button
+                onClick={() => handleNavigation("/dashboard")}
                 className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-md font-semibold rounded-full text-gray-300 bg-gray-800 hover:bg-gray-700 md:py-2 md:text-lg md:px-7"
               >
                 Learn more
-              </a>
+              </button>
             </div>
           </div>
         </div>

@@ -55,13 +55,14 @@ const RecentPayments = () => {
   
   return (
     <div className=" w-[95%] sm:w-[90%] mx-auto my-4 sm:my-8 bg-gray-300 rounded-3xl overflow-hidden">
+      <h2 className="text-2xl font-bold text-gray-800 p-4">Recent Payment</h2>
       {/* Header */}
-      <div className="bg-gray-900 p-4 rounded-t-2xl">
-        <div className="grid grid-cols-4 gap-4">
-          <div className="text-white font-semibold text-sm">Time</div>
-          <div className="text-white font-semibold text-sm">Miner</div>
-          <div className="text-white font-semibold text-sm">Type</div>
-          <div className="text-white font-semibold text-sm text-center">Holder</div>
+      <div className="bg-gray-900 p-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
+          <div className="text-white font-semibold text-xs sm:text-sm">Time</div>
+          <div className="text-white font-semibold text-xs sm:text-sm text-center">Miner</div>
+          <div className="text-white font-semibold text-xs sm:text-sm">Type</div>
+          <div className="text-white font-semibold text-xs sm:text-sm text-center">Holder</div>
         </div>
       </div>
 
@@ -70,18 +71,18 @@ const RecentPayments = () => {
         {payments.map((payment, index) => (
           <div 
             key={payment.id}
-            className={`grid grid-cols-4 gap-4 p-4 items-center ${
+            className={`grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 items-center ${
               index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
             }`}
           >
             {/* Time Column */}
-            <div className="text-sm text-gray-500 font-medium">
+            <div className="text-xs sm:text-sm text-gray-500 font-medium">
               {payment.time}
             </div>
 
             {/* Miner Column */}
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-gray-200 overflow-hidden">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gray-200 overflow-hidden">
                 <img 
                   src={payment.miner.image} 
                   alt={payment.miner.name}
@@ -89,10 +90,10 @@ const RecentPayments = () => {
                 />
               </div>
               <div>
-                <div className="font-semibold text-gray-900">
+                <div className="font-semibold text-gray-900 text-xs sm:text-sm">
                   {payment.miner.name}
                 </div>
-                <div className="flex items-center gap-2 text-sm">
+                <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
                   <span className="text-green-500">{payment.miner.hashrateBefore} TH</span>
                   <FaArrowRight className="text-gray-400 text-xs" />
                   <span className="text-gray-600">{payment.miner.hashrateAfter} TH</span>
@@ -102,9 +103,9 @@ const RecentPayments = () => {
 
             {/* Type Column */}
             <div>
-              <button className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-100 hover:bg-purple-200 transition-colors">
+              <button className="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1 sm:py-2 rounded-full bg-purple-100 hover:bg-purple-200 transition-colors">
                 <FaChartLine className="text-purple-600" />
-                <span className="text-sm font-semibold text-gray-900">
+                <span className="text-xs sm:text-sm font-semibold text-gray-900">
                   {payment.type}
                 </span>
               </button>
@@ -112,9 +113,9 @@ const RecentPayments = () => {
 
             {/* Holder Column */}
             <div className="flex justify-center">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-600 shadow-lg shadow-purple-100">
+              <div className="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1 sm:py-2 rounded-full bg-purple-600 shadow-lg shadow-purple-100">
                 <BsLightningCharge className="text-white" />
-                <span className="text-white font-semibold">
+                <span className="text-xs sm:text-sm font-semibold text-white">
                   {payment.holder}
                 </span>
               </div>

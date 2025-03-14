@@ -71,7 +71,7 @@ const MinerSchema = {
 
 
 
-const MiningFarmSchema = {
+const mining-farmchema = {
   farmId: String,            // Unique farm ID
   userId: String,           // Reference to User
   name: String,            // Farm name

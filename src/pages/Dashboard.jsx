@@ -9,6 +9,7 @@ import NotFound from './NotFound';
 import MinerCreationDialog from '../components/dialogs/MinerCreationDialog';
 import WalletConnectionDialog from '../components/dialogs/WalletConnectionDialog';
 import AddFundsDialog from '../components/dialogs/AddFundsDialog';
+import { Circles } from "react-loader-spinner";
 
 // Dashboard Components
 const MainDashboard = () => {
@@ -218,7 +219,7 @@ const Wallet = () => {
   if (!hasBalance) {
     return (
       <div className="p-4 sm:p-6 bg-white rounded-xl shadow-sm">
-        <div className="max-w-2xl mx-auto text-center py-6">
+        <div className="max-w-4xl mx-auto text-center py-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="text-center md:text-left font-semibold">
               <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-3 sm:mb-4">
@@ -451,7 +452,7 @@ const Miners = ({ showMinerCreation, setShowMinerCreation }) => {
   if (!hasMiners) {
     return (
       <div className="p-4 sm:p-6 bg-white rounded-xl shadow-sm">
-        <div className="max-w-2xl mx-auto text-center py-8">
+        <div className="max-w-4xl mx-auto text-center py-8">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="text-center md:text-left font-semibold">
               <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-3 sm:mb-4">
@@ -536,7 +537,7 @@ const MiningFarm = ({ showMinerCreation, setShowMinerCreation }) => {
   if (!hasFarms) {
     return (
       <div className="p-4 sm:p-6 bg-white rounded-xl shadow-sm">
-        <div className="max-w-2xl mx-auto text-center py-8">
+        <div className="max-w-4xl mx-auto text-center py-8">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="text-center md:text-left font-semibold">
               <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3 sm:mb-4">
@@ -637,7 +638,7 @@ const Rewards = ({ showMinerCreation, setShowMinerCreation }) => {
   if (!hasRewards) {
     return (
       <div className="p-4 sm:p-6 bg-white rounded-xl shadow-sm">
-        <div className="max-w-2xl mx-auto text-center py-6">
+        <div className="max-w-4xl mx-auto text-center py-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="text-center md:text-left font-semibold">
               <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3 sm:mb-4">
@@ -824,6 +825,33 @@ const Dashboard = () => {
     // setTimeout(() => {
     // }, 200); // Ensure menu closes first
   };
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading for 2 seconds
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+  if(loading){
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Circles
+          height="80"
+          width="80"
+          color="#a855f7 "
+          ariaLabel="circles-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+          />
+        {/* <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-purple-500"></div> */}
+      </div>
+    )
+  }``
 
 
   return (

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaInfoCircle, FaBolt } from 'react-icons/fa';
 import { BsLightningChargeFill } from 'react-icons/bs';
 import { FaSlidersH } from 'react-icons/fa';
+
 // import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 // import { Card, CardHeader, CardTitle, CardContent } from '@shadcn/ui';
 import com from "../../assets/silver0001.webp"
@@ -15,6 +16,7 @@ import {
   formatBTC,
   formatUSD
 } from '../../utils/minerCalculations';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 // Custom Range Slider Component
 const CustomRangeSlider = ({ value, min, max, onChange, step, color }) => {
@@ -61,7 +63,18 @@ const CustomRangeSlider = ({ value, min, max, onChange, step, color }) => {
 };
 
 const RewardsCalculator = () => {
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const auth = getAuth();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => unsubscribe();
+  }, [auth]);
+
   const [minerPrice, setMinerPrice] = useState(calculateMinerPrice(4));
   const [computingPower, setComputingPower] = useState(4);
   const [energyEfficiency, setEnergyEfficiency] = useState(20);
@@ -90,6 +103,14 @@ const RewardsCalculator = () => {
     energyEfficiency,
     useGominingToken
   });
+
+  const handleCreateMiner = () => {
+    if (user) {
+      navigate("/dashboard/miners");
+    } else {
+      navigate("/login");
+    }
+  };
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -270,7 +291,7 @@ const RewardsCalculator = () => {
             </div>
 
             <button 
-              onClick={() => handleCreateMiner(navigate)}
+              onClick={handleCreateMiner}
               className="mt-8 w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 px-6 rounded-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg"
             >
               Create miner

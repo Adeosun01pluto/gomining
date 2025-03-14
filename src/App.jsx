@@ -19,6 +19,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import AdminDashboard from './pages/AdminDashboard';
 
 const App = () => {
   return (
@@ -40,6 +41,7 @@ const App = () => {
             <Route path="/hosting" element={<Hosting />} />
             <Route path="/login" element={<AuthPage />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/admin" element={<AdminDashboard />} />
             
             {/* Explicit Not Found Route */}
             <Route path="/not-found" element={<NotFound />} />
