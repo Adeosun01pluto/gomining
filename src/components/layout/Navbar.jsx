@@ -27,12 +27,12 @@ const Navbar = () => {
 
   // Handle scroll effect
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+  }, [isOpen]);
 
   // Check if current route is dashboard
   const isDashboardRoute = location.pathname.startsWith('/dashboard');
@@ -67,9 +67,7 @@ const Navbar = () => {
 
   // Handle menu toggle
   const handleMenuToggle = () => {
-    console.log('Toggling menu, current state:', isOpen);
-    setIsOpen(!isOpen);
-    console.log('Menu state toggled to:', !isOpen);
+    setIsOpen((prev) => !prev);
   };
 
   // Handle menu item click
@@ -268,24 +266,24 @@ const Navbar = () => {
         {/* Mobile Navigation Overlay */}
         <div 
           className={`fixed inset-0 bg-black backdrop-blur-sm transition-opacity duration-300 z-[9998] ${
-            isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+            isOpen ? 'opacity-50 pointer-events-auto' : 'opacity-0 pointer-events-none'
           }`}
           onClick={handleMenuClose}
         />
 
         {/* Mobile Navigation Sidebar */}
         <div 
-          className={`fixed top-0 right-0 w-full md:w-80 h-full bg-[#0F0F14] transform transition-transform duration-300 ease-in-out z-[9999] ${
+          className={`fixed top-0 right-0 w-4/5 max-w-[320px] h-full bg-[#0F0F14] transition-transform duration-300 ease-in-out z-[9999] ${
             isOpen ? 'translate-x-0' : 'translate-x-full'
-          } overflow-y-auto`}
+          } overflow-y-auto shadow-xl`}
         >
           <div className="flex flex-col h-full">
             {/* Mobile Menu Header */}
-            <div className="sticky top-0 bg-[#0F0F14] flex items-center justify-between p-4 border-b border-gray-800">
-              <span className="text-white font-medium">Menu</span>
+            <div className="sticky top-0 bg-[#0F0F14] flex items-center justify-end p-4 border-b border-gray-800">
+              {/* <span className="text-white font-medium">Menu</span> */}
               <button
                 onClick={handleMenuClose}
-                className="text-gray-300 hover:text-white p-2"
+                className="text-gray-300 hover:text-white p-2 text-right"
                 aria-label="Close menu"
               >
                 <HiX size={24} />

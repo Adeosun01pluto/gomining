@@ -6,7 +6,7 @@ const Hero = () => {
   return (
     <div className="relative bg-[#0B0B1A] md:min-h-[100vh] flex flex-col">
       {/* Content */}
-      <div className="z-[1000] max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-24 flex flex-col items-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-24 flex flex-col items-center">
         <div className="text-center">
           <h1 className="text-3xl tracking-tight font-semibold text-white sm:text-5xl md:text-5xl">
             DIGITAL MINERS THAT EARN DAILY

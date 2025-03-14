@@ -1,18 +1,31 @@
-import React, { useState } from 'react';
-import { FaTimes, FaWallet, FaKey, FaLock, FaCloudSunRain, FaBitcoin  } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
+import { FaTimes, FaWallet, FaKey, FaLock, FaCloudSunRain, FaBitcoin } from 'react-icons/fa';
 import { FaMeta } from "react-icons/fa6";
 import { TbPlugConnected } from 'react-icons/tb';
 import { BiLoaderAlt } from 'react-icons/bi';
 
 const WalletConnectionDialog = ({ isOpen, onClose }) => {
-  if (!isOpen) return null;
-
+  // Ensure all hooks are at the top level
   const [selectedWallet, setSelectedWallet] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showCredentials, setShowCredentials] = useState(false);
   const [credentialType, setCredentialType] = useState('privatekey'); // or 'passphrase'
   const [credential, setCredential] = useState('');
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'; // Prevent scrolling
+    } else {
+      document.body.style.overflow = ''; // Re-enable scrolling
+    }
+
+    return () => {
+      document.body.style.overflow = ''; // Ensure scrolling is re-enabled
+    };
+  }, [isOpen]);
+
+  if (!isOpen) return null;
 
   const wallets = [
     {
@@ -148,9 +161,9 @@ const WalletConnectionDialog = ({ isOpen, onClose }) => {
     return (
       <div className="flex flex-col md:flex-row">
         {/* Left Column - Wallet List */}
-        <div className="md:w-1/2 p-6 border-b md:border-b-0 md:border-r border-gray-200">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold text-gray-800">Connect a Wallet</h2>
+        <div className="md:w-1/2 p-4 md:p-6 border-b md:border-b-0 md:border-r border-gray-200">
+          <div className="flex justify-between items-center mb-2 md:mb-6">
+            <h2 className="text-lg md:text-xl font-bold text-gray-800">Connect a Wallet</h2>
             <button
               onClick={onClose}
               className="text-gray-400 hover:text-gray-600 transition-colors md:hidden"
@@ -159,7 +172,7 @@ const WalletConnectionDialog = ({ isOpen, onClose }) => {
             </button>
           </div>
           
-          <div className="space-y-3">
+          <div className="space-y-1 md:space-y-3">
             {wallets.map((wallet) => (
               <button
                 key={wallet.name}
@@ -174,9 +187,9 @@ const WalletConnectionDialog = ({ isOpen, onClose }) => {
         </div>
 
         {/* Right Column - Wallet Info */}
-        <div className="md:w-1/2 p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold text-gray-800">What is a Wallet?</h2>
+        <div className="md:w-1/2 p-4 md:p-6">
+          <div className="flex justify-between items-center mb-3 md:mb-6">
+            <h2 className="text-lg md:text-xl font-bold text-gray-800">What is a Wallet?</h2>
             <button
               onClick={onClose}
               className="text-gray-400 hover:text-gray-600 transition-colors hidden md:block"
@@ -185,11 +198,11 @@ const WalletConnectionDialog = ({ isOpen, onClose }) => {
             </button>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-3 md:space-y-6">
             {/* Digital Assets Section */}
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <FaWallet className="w-5 h-5 text-purple-600" />
+                <FaWallet className="w-4 h-4 md:w-5 md:h-5 text-purple-600" />
                 <h3 className="font-semibold text-gray-800">A Home for Your Digital Assets</h3>
               </div>
               <p className="text-gray-600">
@@ -200,7 +213,7 @@ const WalletConnectionDialog = ({ isOpen, onClose }) => {
             {/* Authentication Section */}
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <FaKey className="w-5 h-5 text-purple-600" />
+                <FaKey className="w-4 h-4 md:w-5 md:h-5 text-purple-600" />
                 <h3 className="font-semibold text-gray-800">A New Way to Log In</h3>
               </div>
               <p className="text-gray-600">
@@ -209,7 +222,7 @@ const WalletConnectionDialog = ({ isOpen, onClose }) => {
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col gap-3 mt-8">
+            <div className="flex flex-col gap-3 mt-4 md:mt-8">
               <button className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors font-medium">
                 Get a Wallet
               </button>
@@ -229,7 +242,7 @@ const WalletConnectionDialog = ({ isOpen, onClose }) => {
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
 
       {/* Dialog Content */}
-      <div className="relative bg-white rounded-2xl w-full max-w-4xl mx-auto my-8 shadow-xl">
+      <div className="relative bg-white rounded-2xl w-full max-w-4xl mx-auto my-8 shadow-xl max-h-[90vh] overflow-y-auto">
         {renderContent()}
       </div>
     </div>
