@@ -6,7 +6,7 @@ import { FaGlobe, FaExternalLinkAlt, FaComments } from 'react-icons/fa';
 import { BiDownArrow } from 'react-icons/bi';
 import { IoCalculator } from 'react-icons/io5';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
-
+import gominingLogo from '../../assets/gomininglogo.png';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -135,8 +135,9 @@ const Navbar = () => {
             {/* Left Section - Logo */}
             <div className="flex items-center">
               <a href="/" className="flex items-center gap-3 group">
-                <div className="w-8 h-8 bg-purple-600 rounded-lg shadow-lg shadow-purple-500/50 transition-all duration-300 group-hover:shadow-purple-500/70"></div>
-                <span className="text-xl font-semibold text-white">GoMining</span>
+              <img src={gominingLogo} alt="" className="w-48 scale-150 ml-[-30px]  h-32 object-contain"/>
+                {/* <div className="w-8 h-8 bg-purple-600 rounded-lg shadow-lg shadow-purple-500/50 transition-all duration-300 group-hover:shadow-purple-500/70"></div> */}
+                {/* <span className="text-xl font-semibold text-white">gomining</span> */}
               </a>
             </div>
 

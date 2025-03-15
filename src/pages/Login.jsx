@@ -129,7 +129,7 @@ const handleSubmit = (e) => {
   if (loginMethod === "email") {
     handleEmailLogin(e);
   } else {
-    setError("Phone login is not implemented yet.");
+    setError("Phone login is not available at the moment.");
   }
 };
 
@@ -248,7 +248,7 @@ const handleSubmit = (e) => {
             </div>
 
             <div className="flex justify-end">
-              <Link to="/forgot-password" className="text-sm text-gray-400 hover:text-white transition-colors">
+              <Link to="/login" className="text-sm text-gray-400 hover:text-white transition-colors">
                 Forgot password?
               </Link>
             </div>

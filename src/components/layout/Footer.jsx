@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaTwitter, FaLinkedin, FaDiscord, FaTelegram, FaGlobe, FaMedium, FaGooglePlay, FaApple, FaLanguage, FaComments } from 'react-icons/fa';
+import gominingLogo from '../../assets/gomininglogo.png';
 
 const Footer = () => {
   const navigationLinks = {
@@ -68,8 +69,10 @@ const Footer = () => {
           {/* Logo & App Downloads */}
           <div className="space-y-6 col-span-2">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-purple-600 rounded-lg"></div>
-              <span className="text-xl font-bold">GoMining</span>
+              <img src={gominingLogo} alt="" className="w-48 scale-150 object-contain"/>
+
+              {/* <div className="w-8 h-8 bg-purple-600 rounded-lg"></div>
+              <span className="text-xl font-bold">GoMining</span> */}
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4">

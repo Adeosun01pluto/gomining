@@ -305,13 +305,13 @@ const Profile = () => {
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <h2 className="text-xl font-bold text-gray-800">{user?.displayName || user?.email}</h2>
-                <span className="text-sm text-gray-500">
+                <h2 className="text-xl font-bold text-gray-800 break-all ">{user?.displayName || user?.email}</h2>
+                <span className="text-sm text-gray-500 break-all ">
                   {user?.emailVerified ? '(Verified)' : '(Not Verified)'}
                 </span>
               </div>
-              <p className="text-gray-600">Email: {user?.email}</p>
-              <p className="text-gray-600">User ID: {user?.uid}</p>
+              <p className="text-gray-600 break-all ">Email: {user?.email}</p>
+              <p className="text-gray-600 break-all ">User ID: {user?.uid}</p>
             </div>
           </div>
           <button className="p-2 rounded-lg hover:bg-gray-100 transition-colors">
@@ -866,11 +866,12 @@ const Dashboard = () => {
             <div className="flex-1 flex items-center justify-start">
               {/* GoMining Logo */}
               <div className="flex items-center">
-                <Link to="/dashboard"className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-purple-600 rounded-lg shadow-lg shadow-purple-500/50"></div>
-                  <h1 className="text-xl md:text-2xl font-bold text-purple-600 whitespace-nowrap">GoMining</h1>
+                <Link to="/dashboard"className="flex items-center">
+                  {/* <div className="w-8 h-8 bg-purple-600 rounded-lg shadow-lg shadow-purple-500/50"></div>
+                  <h1 className="text-xl md:text-2xl font-bold text-purple-600 whitespace-nowrap">GoMining</h1> */}
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/6/62/GoMining_Logo_%28Black%29.png" alt="" className="w-48 scale-110 h-16 object-contain ml-[-20px]"/>
                 </Link>
-                <div className="hidden md:flex text-sm items-center ml-2 lg:ml-8 space-x-2">
+                <div className="hidden md:flex text-sm items-center">
                   <Link
                     to="/dashboard"
                     className={`px-4 py-2 rounded-lg transition-all flex items-center space-x-2 ${
@@ -916,7 +917,7 @@ const Dashboard = () => {
                     }`}
                   >
                     <FaChartLine className={isActive('/dashboard/mining-farm') ? 'text-purple-600' : 'text-gray-400'} />
-                    <span>Mining Farm</span>
+                    <span>Mining</span> <span className="lg:flex hidden">Farm</span>
                   </Link>
 
                   <Link
