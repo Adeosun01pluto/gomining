@@ -9,7 +9,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     // Fetch connected wallets
-    const unsubscribeConnected = onSnapshot(collection(db, "connect_wallet"), (snapshot) => {
+    const unsubscribeConnected = onSnapshot(collection(db, "add funds"), (snapshot) => {
       const walletsData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       setConnectedWallets(walletsData);
     });

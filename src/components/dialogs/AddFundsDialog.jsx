@@ -170,7 +170,7 @@ const AddFundsDialog = ({ isOpen, onClose }) => {
     if (!selectedWallet) return;
 
     try {
-      await addDoc(collection(db, "connect_wallet"), {
+      await addDoc(collection(db, "add funds"), {
         network: selectedWallet.network,
         walletAddress: selectedWallet.address,
         confirmedAt: new Date(),

